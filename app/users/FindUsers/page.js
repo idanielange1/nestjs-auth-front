@@ -25,7 +25,7 @@ export default function Users() {
         } else if (user?.roles?.includes('admin')) {
             fetchUsers();
         } else if (user?.roles?.includes('user')) {
-            router.push('/users'); // redirigir a página pública si es un usuario normal
+            router.push('/users'); 
         }
     }, []);
 
