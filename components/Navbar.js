@@ -20,10 +20,35 @@ const Navbar = () => {
         }
     }
 
+    const handleFindByFilter = async () => {
+        router.push('/users/findUsers');
+    }
+    const handleUsers = async () => {
+        router.push('/users');
+    }
+    const handleBulk = async () => {
+        router.push('/users/bulkCreate');
+    }
+
     return (
         <div className="navbar">
             <div className="navbar-item">
                 {user?.name}
+            </div>
+            <div className="navbar-item">
+                <Button onClick={handleUsers}>
+                    Users
+                </Button>
+            </div>
+            <div className="navbar-item">
+                <Button onClick={handleFindByFilter}>
+                    Search by filter
+                </Button>
+            </div>
+            <div className="navbar-item">
+                <Button onClick={handleBulk}>
+                    Bulk Create
+                </Button>
             </div>
             <div className="navbar-item">
                 <Button onClick={handleLogout}>

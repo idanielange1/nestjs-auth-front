@@ -18,32 +18,13 @@ const handleLogin = async (user, pass) => {
     }
 }
 
-const getUsers = async () => {
+const getUsers = async (token) => {
     try {
-        //const response = await axios.get('fakeapi');
-        const response = {
-            data: [
-                {
-                    id: 1,
-                    name: 'muhammad fake',
-                    email: 'a@b.cl',
-                    status: true
-                },
-
-                {
-                    id: 2,
-                    name: 'muhammed fake',
-                    email: 'b@b.cl',
-                    status: true
-                },
-                {
-                    id: 3,
-                    name: 'muhammid fake',
-                    email: 'c@b.cl',
-                    status: true
-                },
-            ]
-        }
+        const response = await axios.get('http://localhost:3001/api/v1/users/getAllUsers', {
+            headers: {
+                token,
+            }
+        });
         return response.data;
     } catch (e) {
         console.error(e);
@@ -113,7 +94,48 @@ const updateUser = async (id, user, token) => {
         return false;
     }
 }
+const getFilteredUsers = async (token, filterActivo, userFilter) => {
+    let cadena='';
+    if (!userFilter.name.match(/[%&@<>\\$'"?{}~|°¬¿:#/'!¡+*,;=]/)) {
+        cadena = cadena+'name='+userFilter.name;
+    }else{
+        alert('Error: Nombre con caracteres no permitidos.');
+    }
+    if(filterActivo.date2 && userFilter.login_after_date !==null){
+        cadena = cadena+'&login_after_date='+userFilter.login_after_date.valueOf();
+    }
+    if(filterActivo.date1 && userFilter.login_before_date !==null){
+        cadena = cadena+'&login_before_date='+userFilter.login_before_date.valueOf();
+    }
+    if(filterActivo.status){
+        cadena = cadena+'&active='+userFilter.status;
+    }
 
+    try {
+        const response = await axios.get('http://localhost:3001/api/v1/users/findUsers?'+cadena, {
+            headers: {
+                token,
+            }
+        });
+        return response.data;
+    } catch (e) {
+        console.error(e);
+        return [];
+    }
+}
+const registerBulk = async (token, users) => {
+    try{
+        const response = await axios.post('http://localhost:3001/api/v1/users/bulkCreate', users, {
+            headers: {
+                'token': token,
+            }
+        });
+        return response;
+    }catch (e) {
+        console.error(e);
+        return false;
+    }
+}
 export default {
     handleLogin,
     getUsers,
@@ -121,4 +143,6 @@ export default {
     logOut,
     registerUser,
     updateUser,
+    getFilteredUsers,
+    registerBulk,
 };
