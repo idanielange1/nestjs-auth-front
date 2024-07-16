@@ -111,7 +111,6 @@ export default function BulkCreate() {
                         <TableCell>Email</TableCell>
                         <TableCell>Contraseña</TableCell>
                         <TableCell>Teléfono móvil</TableCell>
-                        <TableCell>Acciones</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
